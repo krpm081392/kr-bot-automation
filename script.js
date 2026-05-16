@@ -1,104 +1,11 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
-import { OBJLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/OBJLoader.js";
-
-const canvas = document.getElementById("robotCanvas");
-const bay = document.querySelector(".robot-bay");
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-camera.position.set(0, 1.4, 6);
-
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-const hemi = new THREE.HemisphereLight(0x99ddff, 0x050505, 2.5);
-scene.add(hemi);
-
-const light = new THREE.PointLight(0x22d3ee, 3, 50);
-light.position.set(4, 6, 5);
-scene.add(light);
-
-const orange = new THREE.PointLight(0xff7a18, 4, 20);
-orange.position.set(-2, 1, 3);
-scene.add(orange);
-
-const floor = new THREE.Mesh(
-  new THREE.CylinderGeometry(2.6, 2.6, 0.08, 64),
-  new THREE.MeshStandardMaterial({ color: 0x07111e, roughness: 0.7, metalness: 0.4 })
-);
-floor.position.y = -1.6;
-floor.scale.z = 0.45;
-scene.add(floor);
-
-let model = new THREE.Group();
-scene.add(model);
-
-const loader = new OBJLoader();
-loader.load(
-  "assets/Rmk3.obj",
-  (obj) => {
-    obj.traverse((child) => {
-      if (child.isMesh) {
-        child.material = new THREE.MeshStandardMaterial({
-          color: 0x7f8fa0,
-          roughness: 0.45,
-          metalness: 0.75
-        });
-        child.castShadow = true;
-      }
-    });
-
-    const box = new THREE.Box3().setFromObject(obj);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-
-    obj.position.sub(center);
-    const maxSize = Math.max(size.x, size.y, size.z);
-    obj.scale.setScalar(3.1 / maxSize);
-
-    model.add(obj);
-  },
-  undefined,
-  () => {
-    const fallback = new THREE.Mesh(
-      new THREE.BoxGeometry(1.6, 2.4, 1),
-      new THREE.MeshStandardMaterial({ color: 0x6b7280, metalness: .7, roughness: .4 })
-    );
-    model.add(fallback);
-  }
-);
-
-function resize(){
-  const w = bay.clientWidth;
-  const h = bay.clientHeight;
-  renderer.setSize(w, h);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-}
-resize();
-window.addEventListener("resize", resize);
-
-let t = 0;
-function animate(){
-  requestAnimationFrame(animate);
-  t += 0.015;
-
-  model.rotation.y = Math.sin(t * 1.2) * 0.45 + 0.3;
-  model.rotation.x = Math.sin(t * 2.2) * 0.06;
-  model.position.y = Math.sin(t * 3) * 0.08 - 0.2;
-
-  orange.intensity = 2.5 + Math.sin(t * 18) * 1.8;
-
-  renderer.render(scene, camera);
-}
-animate();
-
-// Gemini chat
 const openChat = document.getElementById("openChat");
-const closeChat = document.getElementById("closeChat");
 const aiPanel = document.getElementById("aiPanel");
+const closeChat = document.getElementById("closeChat");
 const sendAi = document.getElementById("sendAi");
 const aiInput = document.getElementById("aiInput");
 const aiMessages = document.getElementById("aiMessages");
+const npc = document.getElementById("npcRobot");
+const npcBubble = document.getElementById("npcBubble");
 
 openChat.onclick = () => aiPanel.classList.toggle("open");
 closeChat.onclick = () => aiPanel.classList.remove("open");
@@ -111,6 +18,97 @@ function addMsg(text, type){
   aiMessages.scrollTop = aiMessages.scrollHeight;
 }
 
+npc.onclick = () => {
+  aiPanel.classList.add("open");
+  addMsg("Hi KR Bot, tell me more.", "user");
+  setTimeout(() => addMsg("Hello! I can explain our $20 Messenger Bot, $100 Messenger + WhatsApp package, or $499 Website + Messenger Bot.", "bot"), 350);
+};
+
+let targets = [];
+let targetIndex = 0;
+
+function refreshTargets(){
+  targets = [...document.querySelectorAll(".repair-target")].filter(el => el.offsetParent !== null);
+}
+
+function setState(state){
+  npc.className = "npc " + state;
+}
+
+function pagePointForElement(el){
+  const r = el.getBoundingClientRect();
+  const rw = npc.offsetWidth || 240;
+  const rh = npc.offsetHeight || 300;
+  let x = r.left + window.scrollX + Math.min(r.width * .64, r.width - 45) - rw * .48;
+  let y = r.top + window.scrollY + Math.min(r.height * .16, 150) - rh * .20;
+  x = Math.max(18, x);
+  y = Math.max(84, y);
+  return {x, y};
+}
+
+function moveToTarget(el){
+  if(!el) return;
+  setState("walking");
+  npcBubble.textContent = "Walking to repair area...";
+  const {x, y} = pagePointForElement(el);
+  const currentX = parseFloat(npc.style.left || "0");
+  npc.style.transform = x >= currentX ? "scaleX(1)" : "scaleX(-1)";
+  npc.style.left = x + "px";
+  npc.style.top = y + "px";
+  setTimeout(() => startWork(el), 2500);
+}
+
+function startWork(el){
+  const mode = Math.random() > .48 ? "fixing" : "scanning";
+  setState(mode);
+  document.querySelectorAll(".repair-target").forEach(t => t.classList.remove("active-repair"));
+  el.classList.add("active-repair");
+  npcBubble.textContent = el.dataset.message || "⚡ Fixing this section...";
+  createSparks(el);
+  setTimeout(() => {
+    el.classList.remove("active-repair");
+    setState("idle");
+    npcBubble.textContent = "Click me to know more";
+    setTimeout(nextTarget, 1300);
+  }, 5000);
+}
+
+function nextTarget(){
+  refreshTargets();
+  if(!targets.length) return;
+  targetIndex = (targetIndex + 1) % targets.length;
+  moveToTarget(targets[targetIndex]);
+}
+
+function createSparks(el){
+  const r = el.getBoundingClientRect();
+  for(let i=0; i<20; i++){
+    const s = document.createElement("div");
+    s.style.cssText = "position:absolute;width:7px;height:7px;border-radius:50%;background:#facc15;box-shadow:0 0 15px #f97316;z-index:80;pointer-events:none";
+    s.style.left = (r.left + window.scrollX + Math.random() * r.width) + "px";
+    s.style.top = (r.top + window.scrollY + Math.random() * Math.min(r.height, 130)) + "px";
+    document.body.appendChild(s);
+    const dx = Math.random() * 140 - 70;
+    const dy = Math.random() * 140 - 70;
+    s.animate([
+      { transform: "translate(0,0) scale(1)", opacity: 1 },
+      { transform: `translate(${dx}px,${dy}px) scale(0)`, opacity: 0 }
+    ], {duration: 900, easing: "ease-out"});
+    setTimeout(() => s.remove(), 950);
+  }
+}
+
+window.addEventListener("load", () => {
+  refreshTargets();
+  const start = document.getElementById("heroFloor") || document.getElementById("heroTarget");
+  const p = pagePointForElement(start);
+  npc.style.left = p.x + "px";
+  npc.style.top = p.y + "px";
+  setState("idle");
+  setTimeout(nextTarget, 1500);
+});
+window.addEventListener("resize", refreshTargets);
+
 async function askAi(){
   const msg = aiInput.value.trim();
   if(!msg) return;
@@ -118,20 +116,17 @@ async function askAi(){
   aiInput.value = "";
   addMsg("Thinking...", "bot");
   const last = aiMessages.lastChild;
-
   try{
     const res = await fetch("/api/chat", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({message:msg})
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({message: msg})
     });
     const data = await res.json();
     last.textContent = data.reply || "Sorry, please message us on WhatsApp.";
   }catch(e){
-    last.textContent = "Gemini is not connected yet. Add GEMINI_API_KEY in Vercel.";
+    last.textContent = "Gemini is not connected yet. Add GEMINI_API_KEY in Vercel Environment Variables.";
   }
 }
 sendAi.onclick = askAi;
-aiInput.addEventListener("keydown", e => {
-  if(e.key === "Enter") askAi();
-});
+aiInput.addEventListener("keydown", e => { if(e.key === "Enter") askAi(); });
