@@ -1,32 +1,23 @@
-# KR Bot Automation Final Anchored NPC Robot
+# KR Bot Automation Live 3D Only
 
-This version uses the robot image from your reference and makes it a page-anchored NPC:
-- position: absolute, not fixed
-- walks between real HTML sections
-- fixes/scans sections
-- welding sparks appear on target elements
-- clicking robot opens Gemini chat
-- robot stays in page coordinates when scrolling
+IMPORTANT: This version has NO robot image and NO assets folder.
+The robot is live Three.js 3D canvas.
 
-Upload:
+Upload only:
 - index.html
 - style.css
 - script.js
 - README.md
-- assets/
-- api/chat.js
+- api/
 
-Delete old:
-- src
+Delete from GitHub:
+- assets/
+- src/
 - package.json
-- old ZIP files
+- all .zip files
+- old robot jpg/png files
 
 Vercel:
 - Framework Preset: Other
 - Build Command: empty
 - Output Directory: empty
-
-Gemini:
-Add Environment Variable:
-GEMINI_API_KEY
-Then redeploy.
