@@ -1,11 +1,12 @@
-# KR Bot Automation Patrol Robot
+# KR Bot Automation Final Anchored NPC Robot
 
-This version has:
-- Big robot walking/patrolling around the website
-- Robot says "Click me to know more"
-- Welding sparks and scanning animation
-- Click robot to open Gemini chat
-- WhatsApp and pricing included
+This version uses the robot image from your reference and makes it a page-anchored NPC:
+- position: absolute, not fixed
+- walks between real HTML sections
+- fixes/scans sections
+- welding sparks appear on target elements
+- clicking robot opens Gemini chat
+- robot stays in page coordinates when scrolling
 
 Upload:
 - index.html
@@ -18,6 +19,7 @@ Upload:
 Delete old:
 - src
 - package.json
+- old ZIP files
 
 Vercel:
 - Framework Preset: Other
