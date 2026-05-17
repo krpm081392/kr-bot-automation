@@ -1,13 +1,14 @@
-# KR Bot Automation Mechanic NPC Final
+# KR Bot Automation GLB NPC
 
-Fixed:
-- "Services You Can Sell" changed to "AI Automation Services"
-- Keeps the 4 premium robot service images
-- Adds a better mechanic NPC robot made with CSS parts, not emoji/Roblox
-- Robot is page-anchored absolute, not fixed
-- Robot walks between real website elements
-- Robot welds/scans sections with sparks
-- Clicking robot opens Gemini chat
+Clean stable website + uploaded animated GLB robot NPC.
+
+Included:
+- 4 nice service robot images
+- AI Automation Services heading
+- animated GLB robot walking/patrolling around sections
+- click robot to open Gemini chat
+- pricing $20 / $100 / $499
+- WhatsApp and email contact
 
 Upload:
 - index.html
@@ -17,11 +18,11 @@ Upload:
 - assets/
 - api/
 
-Delete old files/folders first:
-- old src/
-- old package.json
-- old zip files
-- old extra robot image files not inside assets/
+Delete old broken files first:
+- src/
+- package.json
+- old ZIP files
+- old random robot images outside assets/
 
 Vercel:
 - Framework Preset: Other
@@ -29,4 +30,4 @@ Vercel:
 - Output Directory: empty
 
 Gemini:
-Add GEMINI_API_KEY in Vercel Environment Variables, then redeploy.
+Add GEMINI_API_KEY in Environment Variables, then redeploy.

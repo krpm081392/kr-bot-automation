@@ -4,150 +4,144 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>KR Bot Automation</title>
-<meta name="description" content="Messenger bot automation, WhatsApp bots, lead generation, and website automation."/>
+<meta name="description" content="Messenger bots, WhatsApp bots, lead generation, and website automation for small businesses."/>
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div class="grid"></div>
-<div class="glow glow-left"></div>
-<div class="glow glow-right"></div>
+<div class="grid-bg"></div>
+<div class="glow left"></div>
+<div class="glow right"></div>
 
-<header class="nav repair-target" data-message="🔧 Checking navigation menu...">
-  <div class="logo"><span>KR</span> BOT AUTOMATION</div>
+<header class="nav">
+  <a class="brand" href="#"><span>KR</span> BOT AUTOMATION</a>
   <nav>
-    <a href="#demo">Demo</a>
     <a href="#services">Services</a>
+    <a href="#demo">Demo</a>
     <a href="#pricing">Pricing</a>
     <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-    <a class="get-started" href="#contact">Get Started</a>
+    <a href="#contact" class="nav-btn">Get Started</a>
   </nav>
 </header>
 
-<button class="ask-btn" id="openChat">🤖 Ask KR Bot</button>
-<a class="wa-btn" target="_blank" href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20Messenger%20bot.">💬 WhatsApp</a>
+<a class="float-wa" href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20bot." target="_blank">💬 WhatsApp</a>
+<button class="float-chat" id="openChat">🤖 Ask KR Bot</button>
 
-<main id="stage">
-  <!-- Premium mechanic NPC robot: page-anchored absolute, not fixed -->
-  <div id="npcRobot" class="npc walking" aria-label="KR mechanic robot">
-    <div id="npcBubble" class="npc-bubble">Click me to know more</div>
-    <div class="robot-shell">
-      <div class="antenna"></div>
-      <div class="head">
-        <div class="rust rust-a"></div>
-        <div class="eye eye-l"></div>
-        <div class="eye eye-r"></div>
-        <div class="mouth"></div>
+<main>
+  <div id="npcRobot" class="glb-npc" title="Click me to chat with KR Bot">
+    <div id="npcSpeech" class="npc-speech">Hi! I can explain our services.</div>
+    <canvas id="npcCanvas"></canvas>
+  </div>
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="pill">● AI automation systems online</div>
+      <h1>Automate Your Business With <span>AI Robot Workers</span></h1>
+      <p>We build Messenger bots that reply to customers, show products, collect leads, and hand over hot buyers to the owner automatically.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#demo">View Demo</a>
+        <a class="btn secondary" href="#pricing">See Pricing</a>
       </div>
-      <div class="neck"></div>
-      <div class="body">
-        <div class="body-glow"></div>
-        <div class="plate">KR</div>
-        <div class="bolt b1"></div>
-        <div class="bolt b2"></div>
-        <div class="bolt b3"></div>
-        <div class="toolpack">
-          <span></span><span></span><span></span>
+    </div>
+
+    <div class="hero-visual">
+      <div class="bot-card">
+        <div class="bot-head">
+          <div>
+            <b>KR Sales Bot</b>
+            <small>Active now</small>
+          </div>
+          <span>●</span>
+        </div>
+        <p class="msg bot">👋 Hi! Welcome to our shop.</p>
+        <p class="msg bot">What do you want to do?</p>
+        <div class="bot-options">
+          <button>View Products</button>
+          <button>Talk to Owner</button>
+        </div>
+        <p class="msg user">View Products</p>
+        <p class="msg bot">🛍️ Here are our best sellers.</p>
+        <div class="product-mini">
+          <span>📦</span>
+          <div><b>Product A</b><small>$99 • Available today</small></div>
         </div>
       </div>
-      <div class="arm arm-l"><span></span><i></i></div>
-      <div class="arm arm-r"><span></span><i></i><em class="wrench"></em></div>
-      <div class="leg leg-l"><span></span><i></i></div>
-      <div class="leg leg-r"><span></span><i></i></div>
-      <div class="npc-sparks"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      <div class="scan-beam"></div>
-    </div>
-  </div>
-
-  <section class="hero repair-target" id="heroTarget" data-message="🤖 Checking your automation system...">
-    <div class="hero-copy">
-      <div class="status"><i></i> KR Worker Bot is alive inside this website</div>
-      <h1>Automate Your Business With <em>AI Robot Workers</em></h1>
-      <p>We build Messenger bots that sell, support, collect leads, and hand over customers automatically.</p>
-      <div class="actions">
-        <a class="btn primary" href="#demo">▷ View Demo</a>
-        <a class="btn ghost" href="#pricing">ⓘ See Pricing</a>
+      <div class="repair-arm">
+        <div class="arm-base"></div>
+        <div class="arm-one"></div>
+        <div class="arm-two"></div>
+        <div class="tool"></div>
+        <div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
       </div>
-    </div>
-
-    <div class="hero-floor repair-target" id="heroFloor" data-message="⚡ Welding the hero section...">
-      <div class="floor-path"></div>
-      <div class="floor-note">A mechanic AI robot patrols your website, fixes sections, scans leads, and answers questions when clicked.</div>
     </div>
   </section>
 
-  <section id="services" class="services repair-target" data-message="⚡ Fixing automation service cards...">
+  <section id="services" class="services">
     <h2>AI Automation Services</h2>
-    <p class="section-sub">Premium automation services for page owners and small businesses.</p>
-
+    <p class="section-sub">Choose the automation package that fits your business.</p>
     <div class="service-grid">
-      <article class="service-card repair-target" data-message="💬 Fixing Messenger Bot offer...">
+      <article class="service-card">
         <img src="assets/service-1.jpg" alt="Messenger Bots">
         <div class="service-body">
-          <div class="icon purple">↗</div>
+          <div class="icon">💬</div>
           <h3>Messenger Bots</h3>
-          <p>Automate conversations, answer FAQs, and turn visitors into customers.</p>
+          <p>Automate conversations, answer FAQs, show products, and turn visitors into customers.</p>
           <a href="#contact">Learn more →</a>
         </div>
       </article>
-
-      <article class="service-card repair-target" data-message="🟢 Checking WhatsApp automation...">
+      <article class="service-card">
         <img src="assets/service-2.jpg" alt="WhatsApp Bots">
         <div class="service-body">
-          <div class="icon green">☘</div>
+          <div class="icon green">🟢</div>
           <h3>WhatsApp Bots</h3>
-          <p>Engage customers on WhatsApp and close more sales.</p>
+          <p>Give customers a fast WhatsApp contact path and close more sales directly.</p>
           <a href="#contact">Learn more →</a>
         </div>
       </article>
-
-      <article class="service-card repair-target" data-message="🔍 Scanning lead generation system...">
+      <article class="service-card">
         <img src="assets/service-3.jpg" alt="Lead Generation">
         <div class="service-body">
           <div class="icon blue">👥</div>
           <h3>Lead Generation</h3>
-          <p>Collect leads, qualify them, and hand over hot customers to your team.</p>
+          <p>Collect leads, qualify them, and hand over warm customers to your team.</p>
           <a href="#contact">Learn more →</a>
         </div>
       </article>
-
-      <article class="service-card repair-target" data-message="⚙ Welding full automation system...">
+      <article class="service-card">
         <img src="assets/service-4.jpg" alt="Full Automation">
         <div class="service-body">
-          <div class="icon violet">⚙</div>
+          <div class="icon purple">⚙️</div>
           <h3>Full Automation</h3>
-          <p>From chatbots to website systems, we handle the full setup.</p>
+          <p>From chatbots to websites and lead capture flows, we set up the full system.</p>
           <a href="#contact">Learn more →</a>
         </div>
       </article>
     </div>
   </section>
 
-  <section id="demo" class="demo repair-target" data-message="📲 Testing Messenger demo flow...">
+  <section id="demo" class="demo">
     <div>
       <h2>Messenger Bot Demo</h2>
-      <p>The bot replies instantly, shows products, collects customer info, and hands over hot leads to the owner.</p>
+      <p>Visitors can ask questions, view products, leave contact info, and request the owner automatically.</p>
       <ul>
-        <li>✅ Show products and prices</li>
-        <li>✅ Collect customer name and phone</li>
-        <li>✅ Answer FAQs automatically</li>
-        <li>✅ Fallback to owner when needed</li>
+        <li>✅ Show product list</li>
+        <li>✅ Answer common questions</li>
+        <li>✅ Collect phone/email leads</li>
+        <li>✅ Hand over to owner when needed</li>
       </ul>
     </div>
-    <div class="demo-box repair-target" data-message="🤖 Optimizing sales bot replies...">
-      <div class="demo-head"><b>KR Sales Bot</b><span>Active now</span></div>
-      <p class="bubble bot">👋 Welcome! Want to view our products?</p>
-      <p class="bubble user">Yes, show products.</p>
-      <div class="product"><span>🛍️</span><div><b>Product A</b><small>$99 • Best seller</small><button>Order Now</button></div></div>
-      <p class="bubble bot">📥 Please enter your phone number so the owner can contact you.</p>
+    <div class="demo-box">
+      <div class="demo-top"><b>KR Demo Bot</b><span>Online</span></div>
+      <p class="msg bot">👋 Hi! Welcome. What do you need today?</p>
+      <p class="msg user">I want your services.</p>
+      <p class="msg bot">We offer Messenger Bot, WhatsApp Bot, Lead Generation, and Website + Bot packages.</p>
+      <p class="msg bot">📞 Please send your phone number so the owner can contact you.</p>
     </div>
   </section>
 
-  <section id="pricing" class="pricing repair-target" data-message="💰 Checking pricing packages...">
+  <section id="pricing" class="pricing">
     <h2>Simple Pricing</h2>
-    <p>Affordable starter plans to get your first clients faster.</p>
+    <p class="section-sub">Affordable starter prices to get more first clients.</p>
     <div class="price-grid">
-      <article class="price-card repair-target" data-message="💬 Messenger Bot starts at $20.">
+      <article class="price-card">
         <h3>Messenger Bot</h3>
         <strong>$20</strong>
         <p>✅ Welcome message</p>
@@ -157,7 +151,7 @@
         <p>✅ Simple owner handover</p>
         <a href="#contact">Choose Plan</a>
       </article>
-      <article class="price-card popular repair-target" data-message="📲 Messenger + WhatsApp is $100.">
+      <article class="price-card popular">
         <div class="tag">Best Starter</div>
         <h3>Messenger + WhatsApp</h3>
         <strong>$100</strong>
@@ -168,7 +162,7 @@
         <p>✅ Owner handover</p>
         <a href="#contact">Choose Plan</a>
       </article>
-      <article class="price-card repair-target" data-message="🌐 Website + Messenger Bot is $499.">
+      <article class="price-card">
         <h3>Website + Messenger Bot</h3>
         <strong>$499</strong>
         <p>✅ Full website</p>
@@ -181,22 +175,21 @@
     </div>
   </section>
 
-  <section id="about" class="about repair-target" data-message="🤖 Reading about KR Bot Automation...">
+  <section id="about" class="about">
     <h2>Why KR Bot Automation?</h2>
-    <p>We help small businesses reply faster, collect leads automatically, and close more sales using Messenger, WhatsApp, and website automation.</p>
+    <p>We help businesses reply faster, look professional, collect leads, and convert visitors into customers using simple automation systems.</p>
   </section>
 
-  <section id="contact" class="contact repair-target" data-message="📩 Contact section ready. Click me or use WhatsApp.">
+  <section id="contact" class="contact">
     <div>
       <h2>Ready To Build Your Bot?</h2>
       <p>Contact KR Bot Automation through WhatsApp or email. Facebook page can be connected later.</p>
       <div class="contact-list">
-        <a target="_blank" href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20Messenger%20bot.">💬 WhatsApp: +385 99 219 4687</a>
+        <a href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20bot." target="_blank">💬 WhatsApp: +385 99 219 4687</a>
         <a href="mailto:krbotautomation@gmail.com">📧 krbotautomation@gmail.com</a>
         <span>📘 Facebook Page Coming Soon</span>
       </div>
     </div>
-
     <form>
       <input placeholder="Your name"/>
       <input placeholder="Your email"/>
@@ -212,24 +205,20 @@
   <span>Messenger bots • WhatsApp bots • Lead generation • Website automation</span>
 </footer>
 
-<div class="ai-panel" id="aiPanel">
-  <div class="ai-head">
-    <div class="chat-user">
-      <div class="avatar">🤖</div>
-      <div><b>KR Worker Bot</b><small>Online</small></div>
-    </div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <b>🤖 KR Worker Bot</b>
     <button id="closeChat">×</button>
   </div>
-  <div class="ai-messages" id="aiMessages">
-    <p class="ai-bot">Hello! Ask me about Messenger bots, WhatsApp bots, pricing, or how our automation works.</p>
+  <div id="messages" class="messages">
+    <p class="bot-reply">Hello! Ask me about Messenger bots, WhatsApp bots, pricing, or website automation.</p>
   </div>
-  <div class="ai-input">
-    <input id="aiInput" placeholder="Type your message..."/>
-    <button id="sendAi">Send</button>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="Type your message..."/>
+    <button id="sendChat">Send</button>
   </div>
-  <small>Gemini uses GEMINI_API_KEY from Vercel Environment Variables.</small>
 </div>
 
-<script src="script.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 </html>
