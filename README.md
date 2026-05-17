@@ -1,15 +1,15 @@
-# KR Bot Automation GLB CDN Fixed
+# KR Bot Automation Model Viewer NPC
 
-This version fixes:
-- Failed to resolve module specifier "three"
+This version uses Google's <model-viewer>, not Three.js imports.
+
+Fixes:
+- invisible robot from Three.js import errors
 - robot not clickable
-- old fallback arm confusion
+- mobile visibility/z-index
+- old repair arm removed
 
-Important:
-The robot file must be here:
+Robot path:
 assets/robot.glb
-
-If GitHub says file is too big, use Git LFS or compress the GLB.
 
 Upload all:
 - index.html
@@ -19,12 +19,4 @@ Upload all:
 - assets/
 - api/
 
-The robot and speech bubble open KR chat when clicked.
-
-
-Extra fix added:
-- robot container has forced width/height
-- z-index 99999
-- page sections overflow visible
-- body/main relative positioning
-- robot and speech bubble clickable
+Clicking the robot, model, or speech bubble opens KR chat.

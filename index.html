@@ -6,6 +6,7 @@
 <title>KR Bot Automation</title>
 <meta name="description" content="Messenger bots, WhatsApp bots, lead generation, and website automation for small businesses."/>
 <link rel="stylesheet" href="style.css"/>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
 <div class="grid-bg"></div>
@@ -26,11 +27,24 @@
 <a class="float-wa" href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20bot." target="_blank">💬 WhatsApp</a>
 <button class="float-chat" id="openChat">🤖 Ask KR Bot</button>
 
+
 <main>
   <div id="robotNpc" class="robot-npc" title="Click me to ask KR Bot">
     <button id="robotSpeech" class="robot-speech" type="button">Hi! Click me to ask KR Bot.</button>
-    <canvas id="robotCanvas" aria-label="KR robot"></canvas>
+    <model-viewer
+      id="robotModel"
+      src="assets/robot.glb"
+      alt="KR robot"
+      autoplay
+      auto-rotate
+      camera-orbit="0deg 75deg 4m"
+      exposure="1.2"
+      shadow-intensity="1"
+      disable-zoom
+      interaction-prompt="none">
+    </model-viewer>
   </div>
+
   <section class="hero">
     <div class="hero-copy">
       <div class="pill">● AI automation systems online</div>
@@ -211,6 +225,6 @@
   </div>
 </div>
 
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
