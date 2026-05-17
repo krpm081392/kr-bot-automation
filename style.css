@@ -109,3 +109,63 @@ footer{display:flex;justify-content:space-between;padding:34px 6%;color:#aab8cc;
   .robot-npc{width:78px!important;height:78px!important;left:54%;top:530px}
   .robot-npc::after{width:48px;bottom:3px}.robot-speech{min-width:120px;max-width:140px;top:-38px;font-size:9.5px;padding:7px 8px}
 }
+
+
+/* MOBILE SERVICE CARD FIX */
+.icon.green{
+  background:#16c95a!important;
+  color:white!important;
+  font-size:28px!important;
+  font-weight:900!important;
+  box-shadow:0 0 24px rgba(22,201,90,.35);
+}
+
+.service-card img{
+  object-position:center center;
+}
+
+@media(max-width:720px){
+  .service-card{
+    overflow:hidden!important;
+  }
+
+  .service-card img{
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    aspect-ratio:auto!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    background:#061321!important;
+    display:block!important;
+    border-bottom:1px solid rgba(80,220,255,.18);
+  }
+
+  .service-card .icon{
+    width:58px!important;
+    height:58px!important;
+    margin:22px 24px 18px!important;
+    font-size:28px!important;
+  }
+
+  .service-card h3{
+    font-size:32px!important;
+    line-height:1.15!important;
+  }
+
+  .service-card p{
+    font-size:21px!important;
+    line-height:1.55!important;
+  }
+
+  .service-card a{
+    font-size:20px!important;
+  }
+
+  .float-chat,
+  .float-wa{
+    right:14px!important;
+    padding:13px 18px!important;
+    font-size:16px!important;
+  }
+}
