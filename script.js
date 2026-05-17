@@ -1,148 +1,163 @@
 
 import * as THREE from "three";
-import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-const fbxNpc = document.getElementById("fbxNpc");
-const fbxCanvas = document.getElementById("fbxCanvas");
-const fbxSpeech = document.getElementById("fbxSpeech");
+const glbNpc = document.getElementById("glbNpc");
+const glbCanvas = document.getElementById("glbCanvas");
+const glbSpeech = document.getElementById("glbSpeech");
 
-let fbxMixer = null;
-let fbxModel = null;
-let fbxClock = new THREE.Clock();
-let fbxDirection = 1;
+let robotMixer = null;
+let robotModel = null;
+let robotClock = new THREE.Clock();
+let robotDirection = 1;
 
-if (fbxCanvas && fbxNpc) {
+if (glbCanvas && glbNpc) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 10000);
-  camera.position.set(0, 1.3, 5.5);
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 1000);
+  camera.position.set(0, 1.35, 5.8);
 
-  const renderer = new THREE.WebGLRenderer({ canvas: fbxCanvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas: glbCanvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0x0f172a, 3.0));
 
-  const key = new THREE.DirectionalLight(0xffffff, 3.2);
+  const key = new THREE.DirectionalLight(0xffffff, 3.3);
   key.position.set(4, 7, 5);
   scene.add(key);
 
-  const blue = new THREE.PointLight(0x22d3ee, 3, 12);
+  const blue = new THREE.PointLight(0x22d3ee, 3.2, 12);
   blue.position.set(-3, 3, 4);
   scene.add(blue);
 
-  function resizeFbx(){
-    const w = fbxNpc.clientWidth || 280;
-    const h = fbxNpc.clientHeight || 340;
+  const orange = new THREE.PointLight(0xff7a18, 1.7, 10);
+  orange.position.set(3, 2, 4);
+  scene.add(orange);
+
+  function resizeRobot(){
+    const w = glbNpc.clientWidth || 300;
+    const h = glbNpc.clientHeight || 360;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
-  resizeFbx();
-  window.addEventListener("resize", resizeFbx);
+  resizeRobot();
+  window.addEventListener("resize", resizeRobot);
 
-  const loader = new FBXLoader();
+  const loader = new GLTFLoader();
   loader.load(
-    "assets/robot.fbx",
-    (model) => {
-      fbxModel = model;
+    "assets/heavy_robot.glb",
+    (gltf) => {
+      robotModel = gltf.scene;
 
-      fbxModel.traverse((child) => {
+      robotModel.traverse((child) => {
         if (child.isMesh) {
           child.frustumCulled = false;
           child.castShadow = true;
-          if (!child.material) {
-            child.material = new THREE.MeshStandardMaterial({
-              color: 0x8aa4b8,
-              metalness: .5,
-              roughness: .35
-            });
-          }
         }
       });
 
-      const box = new THREE.Box3().setFromObject(fbxModel);
+      const box = new THREE.Box3().setFromObject(robotModel);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
-      fbxModel.position.sub(center);
+      robotModel.position.sub(center);
 
       const maxSize = Math.max(size.x, size.y, size.z) || 1;
-      fbxModel.scale.setScalar(2.8 / maxSize);
-      fbxModel.position.y = -0.95;
+      robotModel.scale.setScalar(2.9 / maxSize);
+      robotModel.position.y = -1.02;
 
-      scene.add(fbxModel);
+      scene.add(robotModel);
 
-      if (fbxModel.animations && fbxModel.animations.length) {
-        fbxMixer = new THREE.AnimationMixer(fbxModel);
-        fbxMixer.clipAction(fbxModel.animations[0]).play();
-        fbxSpeech.textContent = "I am walking around your website.";
+      if (gltf.animations && gltf.animations.length) {
+        robotMixer = new THREE.AnimationMixer(robotModel);
+        const clip =
+          gltf.animations.find(a => /walk|walking|run/i.test(a.name)) ||
+          gltf.animations.find(a => /idle/i.test(a.name)) ||
+          gltf.animations[0];
+
+        robotMixer.clipAction(clip).play();
+        glbSpeech.textContent = "I am walking around your website.";
       } else {
-        fbxSpeech.textContent = "I patrol your website and explain services.";
+        glbSpeech.textContent = "I patrol your website and explain services.";
       }
     },
     (xhr) => {
-      if (xhr.total) fbxSpeech.textContent = "Loading robot " + Math.round(xhr.loaded / xhr.total * 100) + "%";
+      if (xhr.total) glbSpeech.textContent = "Loading robot " + Math.round(xhr.loaded / xhr.total * 100) + "%";
     },
     (error) => {
-      console.error("FBX LOAD ERROR:", error);
-      fbxSpeech.textContent = "Robot failed to load.";
+      console.error("GLB LOAD ERROR:", error);
+      glbSpeech.textContent = "Robot failed to load.";
     }
   );
 
-  function animate(){
-    requestAnimationFrame(animate);
-    const delta = fbxClock.getDelta();
-    if (fbxMixer) fbxMixer.update(delta);
+  function animateRobot(){
+    requestAnimationFrame(animateRobot);
+    const delta = robotClock.getDelta();
 
-    if (fbxModel) {
+    if (robotMixer) robotMixer.update(delta);
+
+    if (robotModel) {
       const time = Date.now() * 0.001;
-      fbxModel.rotation.y = Math.sin(time * 1.2) * 0.16 + (fbxDirection === 1 ? 0.25 : -0.25);
-      fbxModel.position.y = -0.95 + Math.sin(time * 3) * 0.04;
-      if (!fbxMixer) fbxModel.rotation.z = Math.sin(time * 4) * 0.035;
+      robotModel.rotation.y = Math.sin(time * 1.15) * 0.14 + (robotDirection === 1 ? 0.25 : -0.25);
+      robotModel.position.y = -1.02 + Math.sin(time * 3) * 0.035;
+
+      if (!robotMixer) robotModel.rotation.z = Math.sin(time * 4) * 0.025;
     }
 
     renderer.render(scene, camera);
   }
-  animate();
+  animateRobot();
 
   const targets = [
     { selector: ".hero-visual", text: "I can explain our automation services." },
     { selector: "#services", text: "We build Messenger and WhatsApp bots." },
     { selector: ".service-card:nth-child(1)", text: "Messenger Bot starts at $20." },
-    { selector: ".service-card:nth-child(2)", text: "We can connect customers to WhatsApp." },
+    { selector: ".service-card:nth-child(2)", text: "Messenger + WhatsApp is $100." },
     { selector: ".service-card:nth-child(3)", text: "Lead generation helps collect buyers." },
-    { selector: "#pricing", text: "Our packages are $20, $100, and $499." },
+    { selector: "#pricing", text: "Website + Messenger Bot package is $499." },
     { selector: "#contact", text: "Click me or WhatsApp us to start." }
   ];
+
   let targetIndex = 0;
 
   function getPoint(target){
     const el = document.querySelector(target.selector);
     if (!el) return null;
+
     const r = el.getBoundingClientRect();
-    const x = window.scrollX + r.left + r.width * 0.62 - fbxNpc.offsetWidth / 2;
-    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - fbxNpc.offsetHeight * 0.58;
-    return { x: Math.max(18, x), y: Math.max(90, y), text: target.text };
+    const x = window.scrollX + r.left + r.width * 0.62 - glbNpc.offsetWidth / 2;
+    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - glbNpc.offsetHeight * 0.58;
+
+    return {
+      x: Math.max(18, x),
+      y: Math.max(90, y),
+      text: target.text
+    };
   }
 
   function patrol(){
-    const point = getPoint(targets[targetIndex % targets.length]);
+    const target = targets[targetIndex % targets.length];
+    const point = getPoint(target);
+
     if (point) {
-      const oldX = parseFloat(fbxNpc.style.left || fbxNpc.offsetLeft || 0);
-      fbxDirection = point.x >= oldX ? 1 : -1;
-      fbxNpc.style.left = point.x + "px";
-      fbxNpc.style.top = point.y + "px";
-      fbxNpc.style.transform = fbxDirection === 1 ? "scaleX(1)" : "scaleX(-1)";
-      fbxSpeech.textContent = point.text;
+      const oldX = parseFloat(glbNpc.style.left || glbNpc.offsetLeft || 0);
+      robotDirection = point.x >= oldX ? 1 : -1;
+      glbNpc.style.left = point.x + "px";
+      glbNpc.style.top = point.y + "px";
+      glbNpc.style.transform = robotDirection === 1 ? "scaleX(1)" : "scaleX(-1)";
+      glbSpeech.textContent = point.text;
     }
+
     targetIndex++;
     setTimeout(patrol, 6500);
   }
 
-  window.addEventListener("load", () => setTimeout(patrol, 1400));
+  window.addEventListener("load", () => setTimeout(patrol, 1200));
 
-  fbxNpc.addEventListener("click", () => {
+  glbNpc.addEventListener("click", () => {
     const panel = document.getElementById("chatPanel");
     if (panel) panel.classList.add("open");
-    fbxSpeech.textContent = "Ask me about KR Bot Automation!";
+    glbSpeech.textContent = "Ask me about KR Bot Automation!";
   });
 }
 
