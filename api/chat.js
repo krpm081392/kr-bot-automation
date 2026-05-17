@@ -1,51 +1,42 @@
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ reply: "Method not allowed." });
-
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return res.status(200).json({
-      reply: "Gemini is not connected yet. Add GEMINI_API_KEY in Vercel Environment Variables, then redeploy."
-    });
+  if (req.method !== "POST") {
+    return res.status(405).json({ reply: "Method not allowed" });
   }
 
-  const { message } = req.body || {};
-  if (!message) return res.status(400).json({ reply: "Please type a question." });
+  const apiKey = process.env.GEMINI_API_KEY;
+  const message = req.body?.message || "";
 
-  const prompt = `
-You are KR Worker Bot, the friendly AI sales assistant for KR Bot Automation.
-
-Services:
-- Messenger Bots
-- WhatsApp Bots
-- Lead Generation
-- Website + Messenger Bot automation
-
-Pricing:
-Messenger Bot: $20. Includes welcome message, basic menu, FAQ replies, fallback reply, simple owner handover.
-Messenger + WhatsApp: $100. Includes Messenger automation, WhatsApp button, product showcase, lead collection, owner handover.
-Website + Messenger Bot: $499. Includes full website, Messenger bot, WhatsApp integration, lead capture system, premium UI setup.
-
-Contact:
-WhatsApp: +385 99 219 4687
-Email: krbotautomation@gmail.com
-Facebook page: coming soon
-
-Answer short, friendly, and focused on selling the service.
-Visitor question: ${message}`;
+  if (!apiKey) {
+    return res.status(200).json({ reply: "" });
+  }
 
   try {
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + apiKey,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text:
+                    "You are KR Worker Bot, a friendly sales assistant for KR Bot Automation. Keep answers short, helpful, and sales-focused. Services: Messenger Bot $20, Messenger + WhatsApp Bot $100, Website + Messenger Bot $499. Features: auto replies, FAQ, product showcase, lead collection, WhatsApp handover, website automation. User asked: " +
+                    message
+                }
+              ]
+            }
+          ]
+        })
       }
     );
-    const data = await geminiRes.json();
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Please message us on WhatsApp for help.";
+
+    const data = await response.json();
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
     return res.status(200).json({ reply });
-  } catch {
-    return res.status(200).json({ reply: "Gemini connection problem. Please message us on WhatsApp." });
+  } catch (error) {
+    return res.status(200).json({ reply: "" });
   }
 }
