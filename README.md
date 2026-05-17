@@ -1,10 +1,7 @@
-# KR Bot Automation FBX Clean Test
+# KR Bot Automation FBX Import Map Fixed
 
-This version:
-- removes the old repair arm
-- uses a safer renamed FBX path: assets/robot.fbx
-- keeps the clean stable website
-- keeps Gemini chat
+This fixes the console error:
+Failed to resolve module specifier "three"
 
 Upload:
 - index.html
@@ -14,4 +11,4 @@ Upload:
 - assets/
 - api/
 
-If the robot still does not show, open F12 Console and send the red error.
+If robot still does not show, open F12 Console and send the new red error.

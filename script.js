@@ -1,6 +1,6 @@
 
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
-import { FBXLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/FBXLoader.js";
+import * as THREE from "three";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
 const fbxNpc = document.getElementById("fbxNpc");
 const fbxCanvas = document.getElementById("fbxCanvas");
@@ -20,16 +20,18 @@ if (fbxCanvas && fbxNpc) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0x0f172a, 3.0));
-  const key = new THREE.DirectionalLight(0xffffff, 3.0);
+
+  const key = new THREE.DirectionalLight(0xffffff, 3.2);
   key.position.set(4, 7, 5);
   scene.add(key);
+
   const blue = new THREE.PointLight(0x22d3ee, 3, 12);
   blue.position.set(-3, 3, 4);
   scene.add(blue);
 
   function resizeFbx(){
-    const w = fbxNpc.clientWidth || 260;
-    const h = fbxNpc.clientHeight || 320;
+    const w = fbxNpc.clientWidth || 280;
+    const h = fbxNpc.clientHeight || 340;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
@@ -43,12 +45,16 @@ if (fbxCanvas && fbxNpc) {
     (model) => {
       fbxModel = model;
 
-      // basic visible material fallback
       fbxModel.traverse((child) => {
         if (child.isMesh) {
           child.frustumCulled = false;
+          child.castShadow = true;
           if (!child.material) {
-            child.material = new THREE.MeshStandardMaterial({ color: 0x8aa4b8, metalness: .5, roughness: .35 });
+            child.material = new THREE.MeshStandardMaterial({
+              color: 0x8aa4b8,
+              metalness: .5,
+              roughness: .35
+            });
           }
         }
       });
@@ -59,8 +65,8 @@ if (fbxCanvas && fbxNpc) {
       fbxModel.position.sub(center);
 
       const maxSize = Math.max(size.x, size.y, size.z) || 1;
-      fbxModel.scale.setScalar(2.7 / maxSize);
-      fbxModel.position.y = -0.9;
+      fbxModel.scale.setScalar(2.8 / maxSize);
+      fbxModel.position.y = -0.95;
 
       scene.add(fbxModel);
 
@@ -89,7 +95,7 @@ if (fbxCanvas && fbxNpc) {
     if (fbxModel) {
       const time = Date.now() * 0.001;
       fbxModel.rotation.y = Math.sin(time * 1.2) * 0.16 + (fbxDirection === 1 ? 0.25 : -0.25);
-      fbxModel.position.y = -0.9 + Math.sin(time * 3) * 0.04;
+      fbxModel.position.y = -0.95 + Math.sin(time * 3) * 0.04;
       if (!fbxMixer) fbxModel.rotation.z = Math.sin(time * 4) * 0.035;
     }
 
