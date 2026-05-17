@@ -1,140 +1,216 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KR Robot</title>
-
-<style>
-body{
-margin:0;
-overflow:hidden;
-background:#050816;
-font-family:Arial;
-}
-
-#text{
-position:absolute;
-top:20px;
-left:20px;
-color:white;
-z-index:10;
-background:rgba(0,0,0,0.5);
-padding:15px;
-border-radius:12px;
-border:1px solid cyan;
-}
-</style>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KR Bot Automation</title>
+<meta name="description" content="Messenger bots, WhatsApp bots, lead generation, and website automation for small businesses."/>
+<link rel="stylesheet" href="style.css"/>
 </head>
-
 <body>
+<div class="grid-bg"></div>
+<div class="glow left"></div>
+<div class="glow right"></div>
 
-<div id="text">
-<h2>KR Robot Loaded</h2>
-<p>If robot appears, it works.</p>
+<header class="nav">
+  <a class="brand" href="#"><span>KR</span> BOT AUTOMATION</a>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#demo">Demo</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-btn">Get Started</a>
+  </nav>
+</header>
+
+<a class="float-wa" href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20bot." target="_blank">💬 WhatsApp</a>
+<button class="float-chat" id="openChat">🤖 Ask KR Bot</button>
+
+<main>
+  <div id="robotNpc" class="robot-npc" title="Click me to ask KR Bot">
+    <button id="robotSpeech" class="robot-speech" type="button">Hi! Click me to ask KR Bot.</button>
+    <canvas id="robotCanvas" aria-label="KR robot"></canvas>
+  </div>
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="pill">● AI automation systems online</div>
+      <h1>Automate Your Business With <span>AI Robot Workers</span></h1>
+      <p>We build Messenger bots that reply to customers, show products, collect leads, and hand over hot buyers to the owner automatically.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#demo">View Demo</a>
+        <a class="btn secondary" href="#pricing">See Pricing</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="bot-card">
+        <div class="bot-head">
+          <div>
+            <b>KR Sales Bot</b>
+            <small>Active now</small>
+          </div>
+          <span>●</span>
+        </div>
+        <p class="msg bot">👋 Hi! Welcome to our shop.</p>
+        <p class="msg bot">What do you want to do?</p>
+        <div class="bot-options">
+          <button>View Products</button>
+          <button>Talk to Owner</button>
+        </div>
+        <p class="msg user">View Products</p>
+        <p class="msg bot">🛍️ Here are our best sellers.</p>
+        <div class="product-mini">
+          <span>📦</span>
+          <div><b>Product A</b><small>$99 • Available today</small></div>
+        </div>
+      </div></div>
+  </section>
+
+  <section id="services" class="services">
+    <h2>AI Automation Services</h2>
+    <p class="section-sub">Choose the automation package that fits your business.</p>
+    <div class="service-grid">
+      <article class="service-card">
+        <img src="assets/service-1.jpg" alt="Messenger Bots">
+        <div class="service-body">
+          <div class="icon">💬</div>
+          <h3>Messenger Bots</h3>
+          <p>Automate conversations, answer FAQs, show products, and turn visitors into customers.</p>
+          <a href="#contact">Learn more →</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <img src="assets/service-2.jpg" alt="WhatsApp Bots">
+        <div class="service-body">
+          <div class="icon green">🟢</div>
+          <h3>WhatsApp Bots</h3>
+          <p>Give customers a fast WhatsApp contact path and close more sales directly.</p>
+          <a href="#contact">Learn more →</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <img src="assets/service-3.jpg" alt="Lead Generation">
+        <div class="service-body">
+          <div class="icon blue">👥</div>
+          <h3>Lead Generation</h3>
+          <p>Collect leads, qualify them, and hand over warm customers to your team.</p>
+          <a href="#contact">Learn more →</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <img src="assets/service-4.jpg" alt="Full Automation">
+        <div class="service-body">
+          <div class="icon purple">⚙️</div>
+          <h3>Full Automation</h3>
+          <p>From chatbots to websites and lead capture flows, we set up the full system.</p>
+          <a href="#contact">Learn more →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="demo" class="demo">
+    <div>
+      <h2>Messenger Bot Demo</h2>
+      <p>Visitors can ask questions, view products, leave contact info, and request the owner automatically.</p>
+      <ul>
+        <li>✅ Show product list</li>
+        <li>✅ Answer common questions</li>
+        <li>✅ Collect phone/email leads</li>
+        <li>✅ Hand over to owner when needed</li>
+      </ul>
+    </div>
+    <div class="demo-box">
+      <div class="demo-top"><b>KR Demo Bot</b><span>Online</span></div>
+      <p class="msg bot">👋 Hi! Welcome. What do you need today?</p>
+      <p class="msg user">I want your services.</p>
+      <p class="msg bot">We offer Messenger Bot, WhatsApp Bot, Lead Generation, and Website + Bot packages.</p>
+      <p class="msg bot">📞 Please send your phone number so the owner can contact you.</p>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing">
+    <h2>Simple Pricing</h2>
+    <p class="section-sub">Affordable starter prices to get more first clients.</p>
+    <div class="price-grid">
+      <article class="price-card">
+        <h3>Messenger Bot</h3>
+        <strong>$20</strong>
+        <p>✅ Welcome message</p>
+        <p>✅ Basic menu</p>
+        <p>✅ FAQ replies</p>
+        <p>✅ Fallback reply</p>
+        <p>✅ Simple owner handover</p>
+        <a href="#contact">Choose Plan</a>
+      </article>
+      <article class="price-card popular">
+        <div class="tag">Best Starter</div>
+        <h3>Messenger + WhatsApp</h3>
+        <strong>$100</strong>
+        <p>✅ Messenger automation</p>
+        <p>✅ WhatsApp button</p>
+        <p>✅ Product showcase</p>
+        <p>✅ Lead collection</p>
+        <p>✅ Owner handover</p>
+        <a href="#contact">Choose Plan</a>
+      </article>
+      <article class="price-card">
+        <h3>Website + Messenger Bot</h3>
+        <strong>$499</strong>
+        <p>✅ Full website</p>
+        <p>✅ Messenger bot</p>
+        <p>✅ WhatsApp integration</p>
+        <p>✅ Lead capture system</p>
+        <p>✅ Premium UI setup</p>
+        <a href="#contact">Choose Plan</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <h2>Why KR Bot Automation?</h2>
+    <p>We help businesses reply faster, look professional, collect leads, and convert visitors into customers using simple automation systems.</p>
+  </section>
+
+  <section id="contact" class="contact">
+    <div>
+      <h2>Ready To Build Your Bot?</h2>
+      <p>Contact KR Bot Automation through WhatsApp or email. Facebook page can be connected later.</p>
+      <div class="contact-list">
+        <a href="https://wa.me/385992194687?text=Hi%20KR%20Bot%20Automation%2C%20I%20am%20interested%20in%20a%20bot." target="_blank">💬 WhatsApp: +385 99 219 4687</a>
+        <a href="mailto:krbotautomation@gmail.com">📧 krbotautomation@gmail.com</a>
+        <span>📘 Facebook Page Coming Soon</span>
+      </div>
+    </div>
+    <form>
+      <input placeholder="Your name"/>
+      <input placeholder="Your email"/>
+      <input placeholder="Your Facebook page"/>
+      <textarea placeholder="What kind of bot do you need?"></textarea>
+      <button type="button">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <b>KR Bot Automation</b>
+  <span>Messenger bots • WhatsApp bots • Lead generation • Website automation</span>
+</footer>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <b>🤖 KR Worker Bot</b>
+    <button id="closeChat">×</button>
+  </div>
+  <div id="messages" class="messages">
+    <p class="bot-reply">Hello! Ask me about Messenger bots, WhatsApp bots, pricing, or website automation.</p>
+  </div>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="Type your message..."/>
+    <button id="sendChat">Send</button>
+  </div>
 </div>
 
-<script type="module">
-
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050816);
-
-const camera = new THREE.PerspectiveCamera(
-60,
-window.innerWidth/window.innerHeight,
-0.1,
-1000
-);
-
-camera.position.set(0,2,8);
-
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-const controls = new OrbitControls(camera, renderer.domElement);
-
-const light = new THREE.HemisphereLight(0xffffff,0x444444,3);
-scene.add(light);
-
-const floor = new THREE.Mesh(
-new THREE.PlaneGeometry(100,100),
-new THREE.MeshStandardMaterial({color:0x111827})
-);
-
-floor.rotation.x = -Math.PI/2;
-floor.position.y = -2;
-scene.add(floor);
-
-let robot;
-
-const loader = new GLTFLoader();
-
-loader.load(
-'./robot.glb',
-
-(gltf)=>{
-
-robot = gltf.scene;
-
-robot.scale.set(2,2,2);
-
-robot.position.set(0,-2,0);
-
-scene.add(robot);
-
-console.log("robot loaded");
-
-},
-
-undefined,
-
-(error)=>{
-
-console.error(error);
-
-alert("Robot failed. Use localhost server.");
-
-}
-
-);
-
-function animate(){
-
-requestAnimationFrame(animate);
-
-if(robot){
-
-robot.rotation.y += 0.005;
-
-robot.position.x = Math.sin(Date.now()*0.001) * 2;
-
-}
-
-controls.update();
-
-renderer.render(scene,camera);
-
-}
-
-animate();
-
-</script>
-
+<script type="module" src="script.js"></script>
 </body>
 </html>

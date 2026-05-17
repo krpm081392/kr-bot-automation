@@ -1,19 +1,17 @@
-# KR Bot Automation Heavy GLB NPC
+# KR Bot Automation GLB CDN Fixed
 
-Fresh clean version using heavy_robot.glb.
+This version fixes:
+- Failed to resolve module specifier "three"
+- robot not clickable
+- old fallback arm confusion
 
-Included:
-- clean website layout
-- 4 robot service images
-- real GLB robot NPC using Three.js import map
-- robot patrols website sections
-- robot speech bubbles explain services/pricing
-- click robot opens Gemini chat
-- WhatsApp and email contact
-- no FBX
-- no old repair arm
+Important:
+The robot file must be here:
+assets/robot.glb
 
-Upload ALL:
+If GitHub says file is too big, use Git LFS or compress the GLB.
+
+Upload all:
 - index.html
 - style.css
 - script.js
@@ -21,15 +19,12 @@ Upload ALL:
 - assets/
 - api/
 
-Important:
-Delete old files from GitHub first if possible:
-- old index.html
-- old script.js
-- old style.css
-- old assets/
+The robot and speech bubble open KR chat when clicked.
 
-Then upload this ZIP contents.
 
-Do NOT test by opening file:/// directly.
-Use Vercel or localhost:
-python -m http.server 8000
+Extra fix added:
+- robot container has forced width/height
+- z-index 99999
+- page sections overflow visible
+- body/main relative positioning
+- robot and speech bubble clickable
