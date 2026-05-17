@@ -2,103 +2,107 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
 
-const npcRobot = document.getElementById("npcRobot");
-const npcCanvas = document.getElementById("npcCanvas");
-const npcSpeech = document.getElementById("npcSpeech");
+const combatNpc = document.getElementById("combatNpc");
+const combatCanvas = document.getElementById("combatCanvas");
+const combatSpeech = document.getElementById("combatSpeech");
+const crackOverlay = document.getElementById("crackOverlay");
+const flameOverlay = document.getElementById("flameOverlay");
 
-let npcMixer = null;
-let npcModel = null;
-let npcClock = new THREE.Clock();
-let npcDirection = 1;
+let combatMixer = null;
+let combatModel = null;
+let combatClock = new THREE.Clock();
+let combatDirection = 1;
 
-if (npcCanvas && npcRobot) {
+if (combatCanvas && combatNpc) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  camera.position.set(0, 1.15, 5.2);
+  camera.position.set(0, 1.15, 5.4);
 
-  const renderer = new THREE.WebGLRenderer({ canvas: npcCanvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas: combatCanvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  scene.add(new THREE.HemisphereLight(0xa5f3fc, 0x020617, 2.5));
+  scene.add(new THREE.HemisphereLight(0xa5f3fc, 0x020617, 2.4));
 
-  const key = new THREE.DirectionalLight(0xffffff, 2.3);
+  const key = new THREE.DirectionalLight(0xffffff, 2.4);
   key.position.set(3, 5, 4);
   scene.add(key);
 
-  const blue = new THREE.PointLight(0x22d3ee, 2.5, 8);
-  blue.position.set(-2, 2, 3);
+  const orange = new THREE.PointLight(0xff7a18, 2.4, 8);
+  orange.position.set(-2, 1.4, 3);
+  scene.add(orange);
+
+  const blue = new THREE.PointLight(0x22d3ee, 2.2, 8);
+  blue.position.set(2, 2, 3);
   scene.add(blue);
 
-  function resizeNpc(){
-    const w = npcRobot.clientWidth || 210;
-    const h = npcRobot.clientHeight || 250;
+  function resizeCombat(){
+    const w = combatNpc.clientWidth || 260;
+    const h = combatNpc.clientHeight || 310;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
-  resizeNpc();
-  window.addEventListener("resize", resizeNpc);
+  resizeCombat();
+  window.addEventListener("resize", resizeCombat);
 
   const loader = new GLTFLoader();
   loader.load(
-    "assets/cute_robot.glb",
+    "assets/combat_steampunk_robot.glb",
     (gltf) => {
-      npcModel = gltf.scene;
+      combatModel = gltf.scene;
 
-      const box = new THREE.Box3().setFromObject(npcModel);
+      const box = new THREE.Box3().setFromObject(combatModel);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
-      npcModel.position.sub(center);
+      combatModel.position.sub(center);
 
       const maxSize = Math.max(size.x, size.y, size.z);
-      npcModel.scale.setScalar(2.55 / maxSize);
-      npcModel.position.y = -0.95;
+      combatModel.scale.setScalar(2.7 / maxSize);
+      combatModel.position.y = -0.95;
 
-      npcModel.traverse((child) => {
+      combatModel.traverse((child) => {
         if (child.isMesh) child.frustumCulled = false;
       });
 
-      scene.add(npcModel);
+      scene.add(combatModel);
 
       if (gltf.animations && gltf.animations.length) {
-        npcMixer = new THREE.AnimationMixer(npcModel);
+        combatMixer = new THREE.AnimationMixer(combatModel);
         const walk =
           gltf.animations.find(a => /walk|walking|run/i.test(a.name)) ||
           gltf.animations.find(a => /idle/i.test(a.name)) ||
           gltf.animations[0];
-
-        const action = npcMixer.clipAction(walk);
-        action.play();
+        combatMixer.clipAction(walk).play();
       }
     },
     undefined,
     () => {
-      npcSpeech.textContent = "Robot failed to load.";
+      combatSpeech.textContent = "Robot model failed to load.";
     }
   );
 
-  function animate(){
-    requestAnimationFrame(animate);
-    const delta = npcClock.getDelta();
-    if (npcMixer) npcMixer.update(delta);
+  function animateCombat(){
+    requestAnimationFrame(animateCombat);
+    const delta = combatClock.getDelta();
+    if (combatMixer) combatMixer.update(delta);
 
-    if (npcModel) {
+    if (combatModel) {
       const time = Date.now() * 0.001;
-      npcModel.rotation.y = Math.sin(time * 1.4) * 0.18 + (npcDirection === 1 ? 0.25 : -0.25);
-      npcModel.position.y = -0.95 + Math.sin(time * 3) * 0.035;
+      combatModel.rotation.y = Math.sin(time * 1.1) * 0.16 + (combatDirection === 1 ? 0.25 : -0.25);
+      combatModel.position.y = -0.95 + Math.sin(time * 2.8) * 0.035;
+      orange.intensity = 2.2 + Math.sin(time * 6) * 0.8;
     }
 
     renderer.render(scene, camera);
   }
-  animate();
+  animateCombat();
 
   const targets = [
-    { selector: ".hero-visual", text: "I can explain our automation services." },
-    { selector: "#services", text: "We build Messenger and WhatsApp bots." },
+    { selector: ".hero-visual", text: "I protect and explain your automation system." },
+    { selector: "#services", text: "These are your AI automation services." },
     { selector: ".service-card:nth-child(1)", text: "Messenger Bot starts at $20." },
-    { selector: ".service-card:nth-child(2)", text: "We can connect customers to WhatsApp." },
-    { selector: ".service-card:nth-child(3)", text: "Lead generation helps collect buyers." },
-    { selector: "#pricing", text: "Our packages are $20, $100, and $499." },
+    { selector: ".service-card:nth-child(2)", text: "Messenger + WhatsApp package is $100." },
+    { selector: "#pricing", text: "Need full website + bot? That package is $499." },
     { selector: "#contact", text: "Click me or WhatsApp us to start." }
   ];
 
@@ -108,8 +112,8 @@ if (npcCanvas && npcRobot) {
     const el = document.querySelector(target.selector);
     if (!el) return null;
     const r = el.getBoundingClientRect();
-    const x = window.scrollX + r.left + r.width * 0.62 - npcRobot.offsetWidth / 2;
-    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - npcRobot.offsetHeight * 0.58;
+    const x = window.scrollX + r.left + r.width * 0.62 - combatNpc.offsetWidth / 2;
+    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - combatNpc.offsetHeight * 0.58;
     return { x: Math.max(18, x), y: Math.max(90, y), text: target.text };
   }
 
@@ -118,24 +122,39 @@ if (npcCanvas && npcRobot) {
     const point = getPoint(target);
 
     if (point) {
-      const oldX = parseFloat(npcRobot.style.left || npcRobot.offsetLeft || 0);
-      npcDirection = point.x >= oldX ? 1 : -1;
-      npcRobot.style.left = point.x + "px";
-      npcRobot.style.top = point.y + "px";
-      npcRobot.style.transform = npcDirection === 1 ? "scaleX(1)" : "scaleX(-1)";
-      npcSpeech.textContent = point.text;
+      const oldX = parseFloat(combatNpc.style.left || combatNpc.offsetLeft || 0);
+      combatDirection = point.x >= oldX ? 1 : -1;
+      combatNpc.style.left = point.x + "px";
+      combatNpc.style.top = point.y + "px";
+      combatNpc.style.transform = combatDirection === 1 ? "scaleX(1)" : "scaleX(-1)";
+      combatSpeech.textContent = point.text;
     }
 
     targetIndex++;
     setTimeout(patrol, 6500);
   }
 
-  window.addEventListener("load", () => setTimeout(patrol, 900));
+  function specialAttack(){
+    combatNpc.classList.add("smashing");
+    combatSpeech.textContent = "Boom! Automation power activated.";
+    crackOverlay.classList.remove("show");
+    flameOverlay.classList.remove("show");
+    void crackOverlay.offsetWidth;
+    crackOverlay.classList.add("show");
+    flameOverlay.classList.add("show");
+    setTimeout(() => combatNpc.classList.remove("smashing"), 900);
+  }
 
-  npcRobot.addEventListener("click", () => {
+  window.addEventListener("load", () => {
+    setTimeout(patrol, 900);
+    setTimeout(specialAttack, 4500);
+  });
+
+  combatNpc.addEventListener("click", () => {
     const panel = document.getElementById("chatPanel");
     if (panel) panel.classList.add("open");
-    npcSpeech.textContent = "Ask me about KR Bot Automation!";
+    combatSpeech.textContent = "Ask me about KR Bot Automation!";
+    specialAttack();
   });
 }
 

@@ -1,13 +1,17 @@
-# KR Bot Automation Cute GLB NPC
+# KR Bot Automation Combat NPC Final
 
-Clean stable website + cute animated GLB NPC robot.
+Clean stable website + combat steampunk robot GLB NPC.
 
-What it does:
-- keeps 4 good robot service images
-- cute_robot.glb walks/patrols around website sections
-- robot talks about services and prices
-- click robot opens Gemini chat
-- WhatsApp and email contact included
+Features:
+- Keeps 4 nice robot service images
+- AI Automation Services heading
+- Combat GLB robot patrols website sections
+- Robot talks about services and pricing
+- Click robot opens Gemini chat
+- Hammer smash-style screen crack effect
+- Flame effect
+- Pricing: $20 / $100 / $499
+- WhatsApp and email contact
 
 Upload:
 - index.html
