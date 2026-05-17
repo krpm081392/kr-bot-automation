@@ -12,35 +12,36 @@ let npcClock = new THREE.Clock();
 let npcDirection = 1;
 
 if (npcCanvas && npcRobot) {
-  const npcScene = new THREE.Scene();
-  const npcCamera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  npcCamera.position.set(0, 1.2, 5.2);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  camera.position.set(0, 1.15, 5.2);
 
-  const npcRenderer = new THREE.WebGLRenderer({ canvas: npcCanvas, alpha: true, antialias: true });
-  npcRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const renderer = new THREE.WebGLRenderer({ canvas: npcCanvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  npcScene.add(new THREE.HemisphereLight(0xa5f3fc, 0x020617, 2.4));
-  const npcKeyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-  npcKeyLight.position.set(3, 5, 4);
-  npcScene.add(npcKeyLight);
+  scene.add(new THREE.HemisphereLight(0xa5f3fc, 0x020617, 2.5));
 
-  const npcBlueLight = new THREE.PointLight(0x22d3ee, 3, 8);
-  npcBlueLight.position.set(-2, 2, 3);
-  npcScene.add(npcBlueLight);
+  const key = new THREE.DirectionalLight(0xffffff, 2.3);
+  key.position.set(3, 5, 4);
+  scene.add(key);
 
-  function resizeNpcRenderer(){
-    const w = npcRobot.clientWidth || 230;
-    const h = npcRobot.clientHeight || 260;
-    npcRenderer.setSize(w, h, false);
-    npcCamera.aspect = w / h;
-    npcCamera.updateProjectionMatrix();
+  const blue = new THREE.PointLight(0x22d3ee, 2.5, 8);
+  blue.position.set(-2, 2, 3);
+  scene.add(blue);
+
+  function resizeNpc(){
+    const w = npcRobot.clientWidth || 210;
+    const h = npcRobot.clientHeight || 250;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
   }
-  resizeNpcRenderer();
-  window.addEventListener("resize", resizeNpcRenderer);
+  resizeNpc();
+  window.addEventListener("resize", resizeNpc);
 
   const loader = new GLTFLoader();
   loader.load(
-    "assets/robot_playground.glb",
+    "assets/cute_robot.glb",
     (gltf) => {
       npcModel = gltf.scene;
 
@@ -50,74 +51,71 @@ if (npcCanvas && npcRobot) {
       npcModel.position.sub(center);
 
       const maxSize = Math.max(size.x, size.y, size.z);
-      npcModel.scale.setScalar(2.6 / maxSize);
-      npcModel.position.y = -0.9;
+      npcModel.scale.setScalar(2.55 / maxSize);
+      npcModel.position.y = -0.95;
 
       npcModel.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.frustumCulled = false;
-        }
+        if (child.isMesh) child.frustumCulled = false;
       });
 
-      npcScene.add(npcModel);
+      scene.add(npcModel);
 
       if (gltf.animations && gltf.animations.length) {
         npcMixer = new THREE.AnimationMixer(npcModel);
-        const preferred = gltf.animations.find(a => /walk|run|idle/i.test(a.name)) || gltf.animations[0];
-        const action = npcMixer.clipAction(preferred);
+        const walk =
+          gltf.animations.find(a => /walk|walking|run/i.test(a.name)) ||
+          gltf.animations.find(a => /idle/i.test(a.name)) ||
+          gltf.animations[0];
+
+        const action = npcMixer.clipAction(walk);
         action.play();
       }
     },
     undefined,
     () => {
-      npcSpeech.textContent = "Robot model failed to load.";
+      npcSpeech.textContent = "Robot failed to load.";
     }
   );
 
-  function animateNpc(){
-    requestAnimationFrame(animateNpc);
+  function animate(){
+    requestAnimationFrame(animate);
     const delta = npcClock.getDelta();
-
     if (npcMixer) npcMixer.update(delta);
 
     if (npcModel) {
-      npcModel.rotation.y = Math.sin(Date.now() * 0.0012) * 0.22 + (npcDirection === 1 ? 0.25 : -0.25);
-      npcModel.position.y = -0.9 + Math.sin(Date.now() * 0.003) * 0.04;
+      const time = Date.now() * 0.001;
+      npcModel.rotation.y = Math.sin(time * 1.4) * 0.18 + (npcDirection === 1 ? 0.25 : -0.25);
+      npcModel.position.y = -0.95 + Math.sin(time * 3) * 0.035;
     }
 
-    npcRenderer.render(npcScene, npcCamera);
+    renderer.render(scene, camera);
   }
-  animateNpc();
+  animate();
 
-  const npcTargets = [
-    { selector: ".hero-visual", text: "I help automate customer conversations." },
-    { selector: "#services", text: "These are our AI automation services." },
-    { selector: ".service-card:nth-child(1)", text: "Messenger Bot starts at only $20." },
-    { selector: ".service-card:nth-child(2)", text: "We can add WhatsApp contact flow too." },
-    { selector: ".service-card:nth-child(3)", text: "I can help collect leads automatically." },
+  const targets = [
+    { selector: ".hero-visual", text: "I can explain our automation services." },
+    { selector: "#services", text: "We build Messenger and WhatsApp bots." },
+    { selector: ".service-card:nth-child(1)", text: "Messenger Bot starts at $20." },
+    { selector: ".service-card:nth-child(2)", text: "We can connect customers to WhatsApp." },
+    { selector: ".service-card:nth-child(3)", text: "Lead generation helps collect buyers." },
     { selector: "#pricing", text: "Our packages are $20, $100, and $499." },
     { selector: "#contact", text: "Click me or WhatsApp us to start." }
   ];
 
-  let npcTargetIndex = 0;
+  let targetIndex = 0;
 
-  function getNpcPoint(target){
+  function getPoint(target){
     const el = document.querySelector(target.selector);
     if (!el) return null;
     const r = el.getBoundingClientRect();
-    const pageX = window.scrollX + r.left + r.width * 0.62;
-    const pageY = window.scrollY + r.top + Math.min(r.height * 0.28, 220);
-    return {
-      x: Math.max(18, pageX - npcRobot.offsetWidth / 2),
-      y: Math.max(92, pageY - npcRobot.offsetHeight * 0.6),
-      text: target.text
-    };
+    const x = window.scrollX + r.left + r.width * 0.62 - npcRobot.offsetWidth / 2;
+    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - npcRobot.offsetHeight * 0.58;
+    return { x: Math.max(18, x), y: Math.max(90, y), text: target.text };
   }
 
-  function patrolNpc(){
-    const target = npcTargets[npcTargetIndex % npcTargets.length];
-    const point = getNpcPoint(target);
+  function patrol(){
+    const target = targets[targetIndex % targets.length];
+    const point = getPoint(target);
 
     if (point) {
       const oldX = parseFloat(npcRobot.style.left || npcRobot.offsetLeft || 0);
@@ -128,18 +126,16 @@ if (npcCanvas && npcRobot) {
       npcSpeech.textContent = point.text;
     }
 
-    npcTargetIndex++;
-    setTimeout(patrolNpc, 6200);
+    targetIndex++;
+    setTimeout(patrol, 6500);
   }
 
-  window.addEventListener("load", () => {
-    setTimeout(patrolNpc, 1200);
-  });
+  window.addEventListener("load", () => setTimeout(patrol, 900));
 
   npcRobot.addEventListener("click", () => {
-    const chatPanel = document.getElementById("chatPanel");
-    if (chatPanel) chatPanel.classList.add("open");
-    npcSpeech.textContent = "Ask me anything about KR Bot Automation!";
+    const panel = document.getElementById("chatPanel");
+    if (panel) panel.classList.add("open");
+    npcSpeech.textContent = "Ask me about KR Bot Automation!";
   });
 }
 

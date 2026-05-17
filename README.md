@@ -1,14 +1,13 @@
-# KR Bot Automation GLB NPC
+# KR Bot Automation Cute GLB NPC
 
-Clean stable website + uploaded animated GLB robot NPC.
+Clean stable website + cute animated GLB NPC robot.
 
-Included:
-- 4 nice service robot images
-- AI Automation Services heading
-- animated GLB robot walking/patrolling around sections
-- click robot to open Gemini chat
-- pricing $20 / $100 / $499
-- WhatsApp and email contact
+What it does:
+- keeps 4 good robot service images
+- cute_robot.glb walks/patrols around website sections
+- robot talks about services and prices
+- click robot opens Gemini chat
+- WhatsApp and email contact included
 
 Upload:
 - index.html
@@ -22,7 +21,7 @@ Delete old broken files first:
 - src/
 - package.json
 - old ZIP files
-- old random robot images outside assets/
+- old random robot files outside assets/
 
 Vercel:
 - Framework Preset: Other
