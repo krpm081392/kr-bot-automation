@@ -1,108 +1,114 @@
 
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
+import { FBXLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/FBXLoader.js";
 
-const combatNpc = document.getElementById("combatNpc");
-const combatCanvas = document.getElementById("combatCanvas");
-const combatSpeech = document.getElementById("combatSpeech");
-const crackOverlay = document.getElementById("crackOverlay");
-const flameOverlay = document.getElementById("flameOverlay");
+const fbxNpc = document.getElementById("fbxNpc");
+const fbxCanvas = document.getElementById("fbxCanvas");
+const fbxSpeech = document.getElementById("fbxSpeech");
 
-let combatMixer = null;
-let combatModel = null;
-let combatClock = new THREE.Clock();
-let combatDirection = 1;
+let fbxMixer = null;
+let fbxModel = null;
+let fbxClock = new THREE.Clock();
+let fbxDirection = 1;
 
-if (combatCanvas && combatNpc) {
+if (fbxCanvas && fbxNpc) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  camera.position.set(0, 1.15, 5.4);
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
+  camera.position.set(0, 1.25, 5.4);
 
-  const renderer = new THREE.WebGLRenderer({ canvas: combatCanvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas: fbxCanvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  scene.add(new THREE.HemisphereLight(0xa5f3fc, 0x020617, 2.4));
+  scene.add(new THREE.HemisphereLight(0xa5f3fc, 0x020617, 2.5));
 
-  const key = new THREE.DirectionalLight(0xffffff, 2.4);
+  const key = new THREE.DirectionalLight(0xffffff, 2.5);
   key.position.set(3, 5, 4);
   scene.add(key);
 
-  const orange = new THREE.PointLight(0xff7a18, 2.4, 8);
-  orange.position.set(-2, 1.4, 3);
-  scene.add(orange);
-
-  const blue = new THREE.PointLight(0x22d3ee, 2.2, 8);
-  blue.position.set(2, 2, 3);
+  const blue = new THREE.PointLight(0x22d3ee, 2.6, 8);
+  blue.position.set(-2, 2, 3);
   scene.add(blue);
 
-  function resizeCombat(){
-    const w = combatNpc.clientWidth || 260;
-    const h = combatNpc.clientHeight || 310;
+  const orange = new THREE.PointLight(0xff7a18, 1.8, 8);
+  orange.position.set(2, 1.5, 3);
+  scene.add(orange);
+
+  function resizeFbx(){
+    const w = fbxNpc.clientWidth || 240;
+    const h = fbxNpc.clientHeight || 290;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
-  resizeCombat();
-  window.addEventListener("resize", resizeCombat);
+  resizeFbx();
+  window.addEventListener("resize", resizeFbx);
 
-  const loader = new GLTFLoader();
+  const loader = new FBXLoader();
+  loader.setPath("assets/source/");
   loader.load(
-    "assets/combat_steampunk_robot.glb",
-    (gltf) => {
-      combatModel = gltf.scene;
+    "MODELO FINAL.fbx",
+    (model) => {
+      fbxModel = model;
 
-      const box = new THREE.Box3().setFromObject(combatModel);
+      const box = new THREE.Box3().setFromObject(fbxModel);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
-      combatModel.position.sub(center);
+      fbxModel.position.sub(center);
 
       const maxSize = Math.max(size.x, size.y, size.z);
-      combatModel.scale.setScalar(2.7 / maxSize);
-      combatModel.position.y = -0.95;
+      fbxModel.scale.setScalar(2.8 / maxSize);
+      fbxModel.position.y = -1.0;
 
-      combatModel.traverse((child) => {
-        if (child.isMesh) child.frustumCulled = false;
+      fbxModel.traverse((child) => {
+        if (child.isMesh) {
+          child.frustumCulled = false;
+          child.castShadow = true;
+        }
       });
 
-      scene.add(combatModel);
+      scene.add(fbxModel);
 
-      if (gltf.animations && gltf.animations.length) {
-        combatMixer = new THREE.AnimationMixer(combatModel);
-        const walk =
-          gltf.animations.find(a => /walk|walking|run/i.test(a.name)) ||
-          gltf.animations.find(a => /idle/i.test(a.name)) ||
-          gltf.animations[0];
-        combatMixer.clipAction(walk).play();
+      if (fbxModel.animations && fbxModel.animations.length) {
+        fbxMixer = new THREE.AnimationMixer(fbxModel);
+        const action = fbxMixer.clipAction(fbxModel.animations[0]);
+        action.play();
+        fbxSpeech.textContent = "I am walking around your website.";
+      } else {
+        fbxSpeech.textContent = "I patrol your website and explain services.";
       }
     },
     undefined,
     () => {
-      combatSpeech.textContent = "Robot model failed to load.";
+      fbxSpeech.textContent = "Robot model failed to load.";
     }
   );
 
-  function animateCombat(){
-    requestAnimationFrame(animateCombat);
-    const delta = combatClock.getDelta();
-    if (combatMixer) combatMixer.update(delta);
+  function animate(){
+    requestAnimationFrame(animate);
+    const delta = fbxClock.getDelta();
+    if (fbxMixer) fbxMixer.update(delta);
 
-    if (combatModel) {
+    if (fbxModel) {
       const time = Date.now() * 0.001;
-      combatModel.rotation.y = Math.sin(time * 1.1) * 0.16 + (combatDirection === 1 ? 0.25 : -0.25);
-      combatModel.position.y = -0.95 + Math.sin(time * 2.8) * 0.035;
-      orange.intensity = 2.2 + Math.sin(time * 6) * 0.8;
+      fbxModel.rotation.y = Math.sin(time * 1.2) * 0.16 + (fbxDirection === 1 ? 0.25 : -0.25);
+      fbxModel.position.y = -1.0 + Math.sin(time * 3) * 0.04;
+
+      if (!fbxMixer) {
+        fbxModel.rotation.z = Math.sin(time * 4) * 0.035;
+      }
     }
 
     renderer.render(scene, camera);
   }
-  animateCombat();
+  animate();
 
   const targets = [
-    { selector: ".hero-visual", text: "I protect and explain your automation system." },
-    { selector: "#services", text: "These are your AI automation services." },
+    { selector: ".hero-visual", text: "I can explain our automation services." },
+    { selector: "#services", text: "We build Messenger and WhatsApp bots." },
     { selector: ".service-card:nth-child(1)", text: "Messenger Bot starts at $20." },
-    { selector: ".service-card:nth-child(2)", text: "Messenger + WhatsApp package is $100." },
-    { selector: "#pricing", text: "Need full website + bot? That package is $499." },
+    { selector: ".service-card:nth-child(2)", text: "We can connect customers to WhatsApp." },
+    { selector: ".service-card:nth-child(3)", text: "Lead generation helps collect buyers." },
+    { selector: "#pricing", text: "Our packages are $20, $100, and $499." },
     { selector: "#contact", text: "Click me or WhatsApp us to start." }
   ];
 
@@ -112,8 +118,8 @@ if (combatCanvas && combatNpc) {
     const el = document.querySelector(target.selector);
     if (!el) return null;
     const r = el.getBoundingClientRect();
-    const x = window.scrollX + r.left + r.width * 0.62 - combatNpc.offsetWidth / 2;
-    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - combatNpc.offsetHeight * 0.58;
+    const x = window.scrollX + r.left + r.width * 0.62 - fbxNpc.offsetWidth / 2;
+    const y = window.scrollY + r.top + Math.min(r.height * 0.30, 230) - fbxNpc.offsetHeight * 0.58;
     return { x: Math.max(18, x), y: Math.max(90, y), text: target.text };
   }
 
@@ -122,39 +128,24 @@ if (combatCanvas && combatNpc) {
     const point = getPoint(target);
 
     if (point) {
-      const oldX = parseFloat(combatNpc.style.left || combatNpc.offsetLeft || 0);
-      combatDirection = point.x >= oldX ? 1 : -1;
-      combatNpc.style.left = point.x + "px";
-      combatNpc.style.top = point.y + "px";
-      combatNpc.style.transform = combatDirection === 1 ? "scaleX(1)" : "scaleX(-1)";
-      combatSpeech.textContent = point.text;
+      const oldX = parseFloat(fbxNpc.style.left || fbxNpc.offsetLeft || 0);
+      fbxDirection = point.x >= oldX ? 1 : -1;
+      fbxNpc.style.left = point.x + "px";
+      fbxNpc.style.top = point.y + "px";
+      fbxNpc.style.transform = fbxDirection === 1 ? "scaleX(1)" : "scaleX(-1)";
+      fbxSpeech.textContent = point.text;
     }
 
     targetIndex++;
     setTimeout(patrol, 6500);
   }
 
-  function specialAttack(){
-    combatNpc.classList.add("smashing");
-    combatSpeech.textContent = "Boom! Automation power activated.";
-    crackOverlay.classList.remove("show");
-    flameOverlay.classList.remove("show");
-    void crackOverlay.offsetWidth;
-    crackOverlay.classList.add("show");
-    flameOverlay.classList.add("show");
-    setTimeout(() => combatNpc.classList.remove("smashing"), 900);
-  }
+  window.addEventListener("load", () => setTimeout(patrol, 900));
 
-  window.addEventListener("load", () => {
-    setTimeout(patrol, 900);
-    setTimeout(specialAttack, 4500);
-  });
-
-  combatNpc.addEventListener("click", () => {
+  fbxNpc.addEventListener("click", () => {
     const panel = document.getElementById("chatPanel");
     if (panel) panel.classList.add("open");
-    combatSpeech.textContent = "Ask me about KR Bot Automation!";
-    specialAttack();
+    fbxSpeech.textContent = "Ask me about KR Bot Automation!";
   });
 }
 

@@ -1,17 +1,14 @@
-# KR Bot Automation Combat NPC Final
+# KR Bot Automation FBX NPC
 
-Clean stable website + combat steampunk robot GLB NPC.
+Clean stable website + FBX robot NPC.
 
-Features:
-- Keeps 4 nice robot service images
-- AI Automation Services heading
-- Combat GLB robot patrols website sections
-- Robot talks about services and pricing
-- Click robot opens Gemini chat
-- Hammer smash-style screen crack effect
-- Flame effect
-- Pricing: $20 / $100 / $499
-- WhatsApp and email contact
+Included:
+- 4 robot service card images
+- FBX robot model from robot-2020.zip
+- NPC patrols around website sections
+- NPC talks about services/pricing
+- clicking NPC opens Gemini chat
+- WhatsApp/email contact
 
 Upload:
 - index.html
@@ -22,9 +19,9 @@ Upload:
 - api/
 
 Delete old broken files first:
-- src/
-- package.json
-- old ZIP files
+- old src/
+- old package.json
+- old zip files
 - old random robot files outside assets/
 
 Vercel:
