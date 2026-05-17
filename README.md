@@ -1,29 +1,31 @@
-# KR Bot Automation Model Viewer NPC
+# KR Bot Automation Final Clean Robot Version
 
-This version uses Google's <model-viewer>, not Three.js imports.
+This ZIP is clean and avoids the previous debug issues.
 
-Fixes:
-- invisible robot from Three.js import errors
-- robot not clickable
-- mobile visibility/z-index
-- old repair arm removed
-
-Robot path:
-assets/robot.glb
-
-Upload all:
+What is inside:
 - index.html
 - style.css
 - script.js
+- assets/robot.glb
+- api/chat.js
 - README.md
+
+Important:
+Delete the old repo files first, then upload this ZIP contents.
+
+Delete old:
+- index.html
+- style.css
+- script.js
+- assets folder
+
+Then upload this ZIP contents:
+- index.html
+- style.css
+- script.js
 - assets/
 - api/
+- README.md
 
-Clicking the robot, model, or speech bubble opens KR chat.
-
-
-Alive NPC update:
-- fake walking bob/tilt for GLB with no walk animation
-- patrols faster
-- lower/closer model camera
-- shadow under robot so it looks grounded
+This version uses model-viewer only and has no old 3D import code.
+Robot is clickable and opens KR chat.
