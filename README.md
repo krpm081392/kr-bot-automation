@@ -1,14 +1,25 @@
-# KR Bot Automation Full Reset Working
+# KR Bot Automation PURE Lottie Final
 
-Upload everything in this ZIP to GitHub root:
+Rebuilt from the clean stable website.
+
+No GLB.
+No model-viewer.
+No Three.js.
+Only Lottie flying robot.
+
+Robot:
+- animated Lottie
+- small on mobile
+- floats/flys around
+- click robot or speech bubble opens KR chat
+- offline replies work even without Gemini API
+
+Upload all files/folders:
 - index.html
 - style.css
 - script.js
-- api/
 - assets/
+- api/
 - README.md
 
-Do not delete script.js.
-
-This site works even without Gemini API because the chat has local sales replies.
-If you add GEMINI_API_KEY in Vercel, Gemini will answer.
+Delete old index.html, style.css, script.js first before uploading.
