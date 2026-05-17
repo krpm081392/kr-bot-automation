@@ -1,25 +1,20 @@
-# KR Bot Automation Final Clean Robot Version
+# KR Bot Automation PURE Lottie Final
 
-This ZIP is clean and avoids the previous debug issues.
+Rebuilt from the clean stable website.
 
-What is inside:
-- index.html
-- style.css
-- script.js
-- assets/robot.glb
-- api/chat.js
-- README.md
+No GLB.
+No model-viewer.
+No Three.js.
+Only Lottie flying robot.
 
-Important:
-Delete the old repo files first, then upload this ZIP contents.
+Robot:
+- animated Lottie
+- small on mobile
+- floats/flys around
+- click robot or speech bubble opens KR chat
+- offline replies work even without Gemini API
 
-Delete old:
-- index.html
-- style.css
-- script.js
-- assets folder
-
-Then upload this ZIP contents:
+Upload all files/folders:
 - index.html
 - style.css
 - script.js
@@ -27,5 +22,4 @@ Then upload this ZIP contents:
 - api/
 - README.md
 
-This version uses model-viewer only and has no old 3D import code.
-Robot is clickable and opens KR chat.
+Delete old index.html, style.css, script.js first before uploading.
