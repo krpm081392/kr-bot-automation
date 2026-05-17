@@ -132,3 +132,23 @@ main{
     padding:7px 8px;
   }
 }
+
+
+/* LOCAL SALES CHAT POLISH */
+.bot-reply,
+.user-reply{
+  white-space:pre-line;
+}
+
+@media(max-width:720px){
+  .chat-panel.open,
+  .chat-panel{
+    max-width:92vw!important;
+  }
+
+  .bot-reply,
+  .user-reply{
+    font-size:14px!important;
+    line-height:1.45!important;
+  }
+}

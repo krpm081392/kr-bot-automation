@@ -1,20 +1,13 @@
-# KR Bot Automation PURE Lottie Final
+# KR Bot Automation - Local Sales Chat Final
 
-Rebuilt from the clean stable website.
+This version:
+- Uses pure Lottie flying robot
+- No GLB, no Three.js, no big robot file
+- Chat works even without Gemini API
+- Local bot replies know services, pricing, packages, features, setup, contact, requirements
+- Gemini can still be connected later through /api/chat
 
-No GLB.
-No model-viewer.
-No Three.js.
-Only Lottie flying robot.
-
-Robot:
-- animated Lottie
-- small on mobile
-- floats/flys around
-- click robot or speech bubble opens KR chat
-- offline replies work even without Gemini API
-
-Upload all files/folders:
+Upload all:
 - index.html
 - style.css
 - script.js
@@ -22,4 +15,4 @@ Upload all files/folders:
 - api/
 - README.md
 
-Delete old index.html, style.css, script.js first before uploading.
+Delete old index.html, style.css, script.js before uploading.
