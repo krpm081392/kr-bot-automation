@@ -1,6 +1,6 @@
 const robotNpc = document.getElementById("robotNpc");
 const robotSpeech = document.getElementById("robotSpeech");
-const robotModel = document.getElementById("robotModel");
+const robotLottie = document.getElementById("robotLottie");
 
 const openChat = document.getElementById("openChat");
 const closeChat = document.getElementById("closeChat");
@@ -22,21 +22,10 @@ if (robotSpeech) robotSpeech.addEventListener("click", (e) => {
   e.stopPropagation();
   openKRBotChat();
 });
-if (robotModel) robotModel.addEventListener("click", (e) => {
+if (robotLottie) robotLottie.addEventListener("click", (e) => {
   e.stopPropagation();
   openKRBotChat();
 });
-
-if (robotModel && robotSpeech) {
-  robotModel.addEventListener("load", () => {
-    robotSpeech.textContent = "Hi! Click me to ask about our services.";
-  });
-
-  robotModel.addEventListener("error", () => {
-    robotSpeech.textContent = "Robot file missing: upload assets/robot.glb";
-    if (robotNpc) robotNpc.classList.add("robot-fallback-visible");
-  });
-}
 
 const robotTargets = [
   { selector: ".hero-visual", text: "Click me to ask about KR Bot services." },
@@ -56,14 +45,10 @@ function robotPoint(target){
   if (!el) return null;
 
   const r = el.getBoundingClientRect();
-  const x = window.scrollX + r.left + r.width * 0.58 - robotNpc.offsetWidth / 2;
-  const y = window.scrollY + r.top + Math.min(r.height * 0.28, 210) - robotNpc.offsetHeight * 0.55;
+  const x = window.scrollX + r.left + r.width * 0.62 - robotNpc.offsetWidth / 2;
+  const y = window.scrollY + r.top + Math.min(r.height * 0.28, 200) - robotNpc.offsetHeight * 0.55;
 
-  return {
-    x: Math.max(12, x),
-    y: Math.max(90, y),
-    text: target.text
-  };
+  return { x: Math.max(12, x), y: Math.max(95, y), text: target.text };
 }
 
 function patrolRobot(){
@@ -77,22 +62,18 @@ function patrolRobot(){
 
     robotNpc.style.left = point.x + "px";
     robotNpc.style.top = point.y + "px";
-    robotNpc.classList.toggle("walk-left", goingLeft);
+    robotNpc.classList.toggle("fly-left", goingLeft);
     robotNpc.classList.add("npc-moving");
-    robotNpc.classList.remove("npc-paused");
     robotSpeech.textContent = point.text;
 
-    setTimeout(() => {
-      robotNpc.classList.remove("npc-moving");
-      robotNpc.classList.add("npc-paused");
-    }, 2600);
+    setTimeout(() => robotNpc.classList.remove("npc-moving"), 2600);
   }
 
   robotTargetIndex++;
-  setTimeout(patrolRobot, 4200);
+  setTimeout(patrolRobot, 4800);
 }
 
-window.addEventListener("load", () => setTimeout(patrolRobot, 1200));
+window.addEventListener("load", () => setTimeout(patrolRobot, 900));
 
 function addMsg(text, type){
   if (!messages) return;
@@ -101,6 +82,33 @@ function addMsg(text, type){
   p.textContent = text;
   messages.appendChild(p);
   messages.scrollTop = messages.scrollHeight;
+}
+
+function localBotReply(message){
+  const msg = message.toLowerCase();
+
+  if (msg.includes("price") || msg.includes("pricing") || msg.includes("cost") || msg.includes("how much") || msg.includes("$")) {
+    return "Our starter prices are: Messenger Bot $20, Messenger + WhatsApp Bot $100, and Website + Messenger Bot $499. The $20 plan is best to start fast.";
+  }
+  if (msg.includes("messenger") || msg.includes("facebook")) {
+    return "Messenger Bot helps your Facebook page reply to customers automatically. It can welcome buyers, answer FAQs, show products, collect buyer info, and hand over serious leads to you.";
+  }
+  if (msg.includes("whatsapp") || msg.includes("wa")) {
+    return "Messenger + WhatsApp package is $100. It lets customers move from Messenger to WhatsApp so you can close sales faster.";
+  }
+  if (msg.includes("lead") || msg.includes("customer") || msg.includes("buyer")) {
+    return "Lead Generation helps collect customer name, phone, product interest, and message. Then the bot can hand over hot buyers to the owner.";
+  }
+  if (msg.includes("website") || msg.includes("site")) {
+    return "Website + Messenger Bot package is $499. It includes a full website, Messenger bot, WhatsApp integration, lead capture system, and premium UI setup.";
+  }
+  if (msg.includes("contact") || msg.includes("start") || msg.includes("order") || msg.includes("avail") || msg.includes("buy")) {
+    return "You can start by choosing a package: $20 Messenger Bot, $100 Messenger + WhatsApp, or $499 Website + Messenger Bot. Tap WhatsApp or Get Started and send your page/business details.";
+  }
+  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
+    return "Hello! I’m KR Worker Bot. I can explain our Messenger bots, WhatsApp bots, lead generation, website package, and pricing.";
+  }
+  return "I can help with our services: Messenger Bot $20, Messenger + WhatsApp Bot $100, Website + Messenger Bot $499, lead generation, and customer automation. Ask me about any package.";
 }
 
 async function ask(){
@@ -121,9 +129,9 @@ async function ask(){
     });
 
     const data = await res.json();
-    last.textContent = data.reply || "Please message us on WhatsApp.";
+    last.textContent = data.reply || localBotReply(msg);
   } catch (e) {
-    last.textContent = "Gemini is not connected yet. Add GEMINI_API_KEY in Vercel Environment Variables.";
+    last.textContent = localBotReply(msg);
   }
 }
 
