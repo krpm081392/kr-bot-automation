@@ -119,11 +119,6 @@ function patrolRobot(){
 
 window.addEventListener("load", () => {
   setTimeout(patrolRobot, 900);
-
-  if (messages && !messages.dataset.ready) {
-    messages.dataset.ready = "true";
-    addMsg("Hello! I’m KR Worker Bot 🤖 Ask me about Messenger bots, WhatsApp bots, pricing, lead generation, or website automation.", "bot");
-  }
 });
 
 function addMsg(text, type){
@@ -244,8 +239,15 @@ async function ask(){
 
     const data = await res.json();
 
-    if (data && data.reply) {
-      last.textContent = data.reply;
+    const apiReply = data && data.reply ? String(data.reply) : "";
+    const apiLooksBroken =
+      apiReply.toLowerCase().includes("gemini is not connected") ||
+      apiReply.toLowerCase().includes("gemini_api_key") ||
+      apiReply.toLowerCase().includes("vercel environment") ||
+      apiReply.toLowerCase().includes("redeploy");
+
+    if (apiReply && !apiLooksBroken) {
+      last.textContent = apiReply;
     } else {
       last.textContent = localBotReply(msg);
     }

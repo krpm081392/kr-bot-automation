@@ -1,18 +1,17 @@
-# KR Bot Automation - Local Sales Chat Final
+# KR Bot Automation - Local Chat No Duplicate Fixed
 
-This version:
-- Uses pure Lottie flying robot
-- No GLB, no Three.js, no big robot file
-- Chat works even without Gemini API
-- Local bot replies know services, pricing, packages, features, setup, contact, requirements
-- Gemini can still be connected later through /api/chat
+Fixed:
+- Removed duplicate automatic bot welcome message.
+- If Gemini API is missing, chat now uses local sales replies instead of saying Gemini is not connected.
+- Local chat answers pricing, packages, Messenger, WhatsApp, lead generation, website automation, setup, and contact.
+- Gemini can still work later when GEMINI_API_KEY is added.
 
 Upload all:
 - index.html
 - style.css
 - script.js
-- assets/
 - api/
+- assets/
 - README.md
 
-Delete old index.html, style.css, script.js before uploading.
+Delete old index.html, style.css, script.js, and api/chat.js before uploading.
