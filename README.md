@@ -1,14 +1,16 @@
-# KR Bot Automation FBX NPC
+# KR Bot Automation Clean Stable
 
-Clean stable website + FBX robot NPC.
+This is the clean rebuild.
 
-Included:
+What is included:
+- Stable layout
+- AI Automation Services heading
 - 4 robot service card images
-- FBX robot model from robot-2020.zip
-- NPC patrols around website sections
-- NPC talks about services/pricing
-- clicking NPC opens Gemini chat
-- WhatsApp/email contact
+- Messenger demo section
+- Pricing: $20 / $100 / $499
+- WhatsApp and email contact
+- Gemini chat API
+- Lightweight animated repair arm in hero
 
 Upload:
 - index.html
@@ -22,7 +24,7 @@ Delete old broken files first:
 - old src/
 - old package.json
 - old zip files
-- old random robot files outside assets/
+- old random robot files
 
 Vercel:
 - Framework Preset: Other
@@ -30,4 +32,4 @@ Vercel:
 - Output Directory: empty
 
 Gemini:
-Add GEMINI_API_KEY in Environment Variables, then redeploy.
+Add GEMINI_API_KEY in Vercel Environment Variables, then redeploy.
