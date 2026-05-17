@@ -20,3 +20,10 @@ Upload all:
 - api/
 
 Clicking the robot, model, or speech bubble opens KR chat.
+
+
+Alive NPC update:
+- fake walking bob/tilt for GLB with no walk animation
+- patrols faster
+- lower/closer model camera
+- shadow under robot so it looks grounded

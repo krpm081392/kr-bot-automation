@@ -57,9 +57,15 @@ function patrolRobot(){
     robotNpc.style.top = point.y + "px";
     robotNpc.classList.toggle("walk-left", robotDirection < 0);
     robotSpeech.textContent = point.text;
+    robotNpc.classList.add("npc-moving");
+    robotNpc.classList.remove("npc-paused");
+    setTimeout(() => {
+      robotNpc.classList.remove("npc-moving");
+      robotNpc.classList.add("npc-paused");
+    }, 2600);
   }
   robotTargetIndex++;
-  setTimeout(patrolRobot, 6500);
+  setTimeout(patrolRobot, 4200);
 }
 
 window.addEventListener("load", () => setTimeout(patrolRobot, 1200));

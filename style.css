@@ -113,3 +113,68 @@ main{
     padding:9px 10px;
   }
 }
+
+
+/* ALIVE NPC FIX - fake walking for non-animated GLB */
+.robot-npc{
+  width:230px!important;
+  height:300px!important;
+  transform-origin:50% 100%!important;
+}
+.robot-npc model-viewer{
+  width:100%!important;
+  height:100%!important;
+  transform-origin:50% 100%!important;
+  animation:robotAliveBob 1.05s ease-in-out infinite, robotAliveTilt 1.8s ease-in-out infinite!important;
+}
+.robot-npc.walk-left model-viewer{
+  transform:scaleX(-1);
+}
+.robot-npc.npc-moving{
+  animation:npcStepMove .7s ease-in-out infinite!important;
+}
+.robot-npc.npc-paused model-viewer{
+  animation:robotIdleBob 2.2s ease-in-out infinite!important;
+}
+@keyframes robotAliveBob{
+  0%,100%{translate:0 0}
+  25%{translate:0 -6px}
+  50%{translate:0 0}
+  75%{translate:0 -4px}
+}
+@keyframes robotAliveTilt{
+  0%,100%{rotate:0deg}
+  25%{rotate:-1.8deg}
+  75%{rotate:1.8deg}
+}
+@keyframes npcStepMove{
+  0%,100%{filter:drop-shadow(0 0 30px #22d3ee88)}
+  50%{filter:drop-shadow(0 0 45px #22d3eebb)}
+}
+@keyframes robotIdleBob{
+  0%,100%{translate:0 0; rotate:0deg}
+  50%{translate:0 -5px; rotate:1deg}
+}
+.robot-npc::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:24px;
+  width:115px;
+  height:18px;
+  transform:translateX(-50%);
+  background:#22d3ee55;
+  border-radius:50%;
+  filter:blur(10px);
+  z-index:-1;
+}
+@media(max-width:720px){
+  .robot-npc{
+    width:145px!important;
+    height:210px!important;
+  }
+  .robot-npc::after{
+    bottom:18px;
+    width:80px;
+  }
+}
